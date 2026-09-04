@@ -1,0 +1,161 @@
+/* ==========================================================================
+   Design tokens — inspirados na linguagem visual do ecossistema Gemini:
+   superfícies claras, gradientes fluidos entre azul/roxo/rosa/ciano,
+   formas orgânicas, bastante espaço em branco.
+   ========================================================================== */
+:root {
+  /* Superfícies */
+  --bg: #f9f9fc;
+  --bg-alt: #f0eefa;
+  --bg-deep: #ecebf8;
+  --surface: #ffffff;
+  --line: rgba(20, 20, 31, 0.09);
+  --line-strong: rgba(20, 20, 31, 0.16);
+
+  /* Tinta */
+  --ink: #15141f;
+  --ink-soft: #514f63;
+  --ink-faint: #85839a;
+
+  /* Gradiente Gemini */
+  --iris: #5b6ef5;
+  --violet: #9b5de5;
+  --magenta: #ee5fb0;
+  --cyan: #17c3c9;
+  --amber: #f6a355;
+
+  --gradient-primary: linear-gradient(120deg, var(--iris) 0%, var(--violet) 45%, var(--magenta) 100%);
+  --gradient-cool: linear-gradient(120deg, var(--cyan) 0%, var(--iris) 100%);
+  --gradient-warm: linear-gradient(120deg, var(--magenta) 0%, var(--amber) 100%);
+  --gradient-text: linear-gradient(100deg, var(--iris), var(--violet) 55%, var(--magenta));
+
+  /* Tipografia */
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  /* Layout */
+  --content-width: 1120px;
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 10px;
+  --shadow-soft: 0 24px 60px -30px rgba(45, 30, 110, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  line-height: 1.12;
+  margin: 0;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+}
+
+::selection {
+  background: var(--violet);
+  color: #fff;
+}
+
+/* Foco visível — acessibilidade */
+:focus-visible {
+  outline: 2.5px solid var(--iris);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+.section {
+  padding: 108px 0;
+}
+
+@media (max-width: 720px) {
+  .section {
+    padding: 72px 0;
+  }
+  body {
+    font-size: 16px;
+  }
+}
+
+.eyebrow-free {
+  /* marcador de intenção: propositalmente não usamos eyebrows genéricos */
+}
+
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

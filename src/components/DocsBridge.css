@@ -1,0 +1,83 @@
+.docsbridge {
+  background: var(--ink);
+  color: #f5f4fb;
+  border-radius: var(--radius-lg);
+  margin: 0 20px;
+  width: auto;
+}
+
+.docsbridge .container {
+  max-width: var(--content-width);
+}
+
+.docsbridge__kicker {
+  color: #a9a6c9;
+  font-size: 0.95rem;
+}
+
+.docsbridge__title {
+  margin-top: 18px;
+  max-width: 680px;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  color: #fff;
+}
+
+.docsbridge__lead {
+  margin-top: 20px;
+  max-width: 620px;
+  color: #c4c1e0;
+}
+
+.docsbridge__list {
+  margin-top: 52px;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.docsbridge__link {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 26px 28px;
+  background: var(--ink);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s ease;
+}
+
+.docsbridge__link:hover {
+  background: #201f30;
+}
+
+.docsbridge__link-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.08rem;
+  color: #fff;
+}
+
+.docsbridge__link-desc {
+  color: #ada9cf;
+  font-size: 0.92rem;
+}
+
+.docsbridge__link-file {
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: var(--cyan);
+  font-family: "Space Grotesk", monospace;
+}
+
+@media (max-width: 720px) {
+  .docsbridge {
+    margin: 0 12px;
+  }
+  .docsbridge__list {
+    grid-template-columns: 1fr;
+  }
+}

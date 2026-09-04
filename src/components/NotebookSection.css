@@ -1,0 +1,83 @@
+.notebook {
+  background: var(--surface);
+}
+
+.notebook__intro {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.notebook__title {
+  font-size: clamp(1.9rem, 3.4vw, 2.5rem);
+}
+
+.notebook__hook {
+  margin-top: 30px;
+  max-width: 640px;
+  font-size: 1.2rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.notebook__body {
+  margin-top: 22px;
+  max-width: 640px;
+  color: var(--ink-soft);
+}
+
+.notebook__flow {
+  margin-top: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 36px 28px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-alt);
+}
+
+.notebook__flow-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.notebook__flow-node {
+  padding: 14px 18px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1.5px solid var(--line-strong);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+.notebook__flow-arrow {
+  transform: rotate(-90deg);
+  flex-shrink: 0;
+}
+
+.notebook__caption {
+  margin-top: 18px;
+  color: var(--ink-faint);
+  font-size: 0.88rem;
+}
+
+@media (max-width: 860px) {
+  .notebook__flow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .notebook__flow-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .notebook__flow-arrow {
+    transform: rotate(0deg);
+    margin-left: 22px;
+  }
+}

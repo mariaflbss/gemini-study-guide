@@ -1,0 +1,43 @@
+.usecases {
+  background: var(--bg-alt);
+}
+
+.usecases__title {
+  font-size: clamp(1.9rem, 3.4vw, 2.4rem);
+  max-width: 520px;
+}
+
+.usecases__grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 48px;
+  row-gap: 40px;
+}
+
+.usecases__item {
+  padding-top: 22px;
+  border-top: 2px solid var(--line-strong);
+}
+
+.usecases__persona {
+  font-size: 1.2rem;
+}
+
+.usecases__steps {
+  margin-top: 12px;
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.usecases__sep {
+  color: var(--violet);
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .usecases__grid {
+    grid-template-columns: 1fr;
+  }
+}
