@@ -80,8 +80,9 @@ npm run build
 npm run preview
 ```
 
-### Caso não queira rodar localmente acesse o link do github pages:
+### Caso não queira rodar localmente acesse o link abaixo:
 
+ [Clique aqui para visualizar o site](https://gemini-study-guide.vercel.app/)
 
 ## Principais seções do site
 
