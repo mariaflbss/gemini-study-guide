@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do Dado ao Insight — Entendendo minha vida acadêmica</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        gBlue: { DEFAULT: '#1A73E8', hover: '#1557B0', light: '#E8F0FE' },
+                        gRed: { DEFAULT: '#EA4335', light: '#FCE8E6' },
+                        gYellow: { DEFAULT: '#FBBC04', light: '#FEF7E0' },
+                        gGreen: { DEFAULT: '#34A853', light: '#E6F4EA' },
+                        slateDark: '#1E293B'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #334155;
+            scroll-behavior: smooth;
+        }
+
+        .step-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step-card.active {
+            border-color: #1A73E8;
+            box-shadow: 0 10px 25px -5px rgba(26, 115, 232, 0.15);
+            background-color: #FFFFFF;
+        }
+
+        .step-card.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+
+        .pulse-subtle {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-gBlue-light selection:text-gBlue">
+
+    <!-- Header Navigation -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="flex space-x-1">
+                    <span class="w-3 h-3 rounded-full bg-[#4285F4]"></span>
+                    <span class="w-3 h-3 rounded-full bg-[#EA4335]"></span>
+                    <span class="w-3 h-3 rounded-full bg-[#FBBC05]"></span>
+                    <span class="w-3 h-3 rounded-full bg-[#34A853]"></span>
+                </div>
+                <h1 class="font-bold text-slate-800 text-lg sm:text-xl tracking-tight">
+                    Do Dado ao Insight <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">Educacional</span>
+                </h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-xs text-slate-500 font-medium hidden md:inline-block">
+                    <i class="fa-solid fa-flask-vial text-gBlue mr-1"></i> Ambiente Demonstrativo
+                </span>
+                <button onclick="resetProcess()" class="text-xs text-slate-600 hover:text-gBlue font-medium px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition">
+                    <i class="fa-solid fa-rotate-right mr-1"></i> Reiniciar
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- Hero Banner / Banner de Introdução -->
+        <section class="mb-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 opacity-10 text-white pointer-events-none">
+                <i class="fa-solid fa-[#000] fa-chart-pie text-[260px]"></i>
+            </div>
+            <div class="max-w-3xl relative z-10">
+                <div class="inline-flex items-center space-x-2 bg-slate-800/80 backdrop-blur-sm border border-slate-700/60 text-gBlue-light px-3 py-1 rounded-full text-xs font-medium mb-4">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Laboratório Prático de Análise de Dados</span>
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-3 text-white leading-tight">
+                    O que os dados podem revelar sobre uma rotina acadêmica?
+                </h2>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                    Muitas pessoas acreditam que analisar dados é apenas criar gráficos bonitos. Na prática, a análise de dados é um <strong>processo rigoroso e investigativo</strong>. Explore o fluxo completo a partir de um conjunto de dados simulados de estudo.
+                </p>
+                <div class="flex flex-wrap gap-3 items-center text-xs text-slate-400 border-t border-slate-700/80 pt-4">
+                    <span class="flex items-center"><i class="fa-solid fa-triangle-exclamation text-gYellow mr-1.5"></i> Dados Fictícios de Exemplo</span>
+                    <span class="hidden sm:inline">•</span>
+                    <span class="flex items-center"><i class="fa-solid fa-shield-halved text-gGreen mr-1.5"></i> Sem Coleta de Dados Reais</span>
+                    <span class="hidden sm:inline">•</span>
+                    <span class="flex items-center"><i class="fa-solid fa-lightbulb text-gBlue mr-1.5"></i> Foco no Raciocínio Analítico</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stepper Navigation / Trilhar das Etapas -->
+        <nav aria-label="Progresso da Análise" class="mb-8">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                
+                <button onclick="goToStep(1)" id="step-btn-1" class="step-card active flex flex-col p-3 rounded-2xl border border-slate-200 bg-white text-left transition hover:border-gBlue">
+                    <span class="text-[10px] uppercase tracking-wider font-bold text-gBlue mb-1">Passo 1</span>
+                    <span class="text-sm font-bold text-slate-800 flex items-center justify-between">
+                        1. Coletar
+                        <i class="fa-solid fa-database text-xs text-slate-400"></i>
+                    </span>
+                </button>
+
+                <button onclick="goToStep(2)" id="step-btn-2" class="step-card flex flex-col p-3 rounded-2xl border border-slate-200 bg-white text-left transition hover:border-gBlue">
+                    <span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Passo 2</span>
+                    <span class="text-sm font-bold text-slate-800 flex items-center justify-between">
+                        2. Preparar
+                        <i class="fa-solid fa-broom text-xs text-slate-400"></i>
+                    </span>
+                </button>
+
+                <button onclick="goToStep(3)" id="step-btn-3" class="step-card flex flex-col p-3 rounded-2xl border border-slate-200 bg-white text-left transition hover:border-gBlue">
+                    <span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Passo 3</span>
+                    <span class="text-sm font-bold text-slate-800 flex items-center justify-between">
+                        3. Visualizar
+                        <i class="fa-solid fa-chart-column text-xs text-slate-400"></i>
+                    </span>
+                </button>
+
+                <button onclick="goToStep(4)" id="step-btn-4" class="step-card flex flex-col p-3 rounded-2xl border border-slate-200 bg-white text-left transition hover:border-gBlue">
+                    <span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Passo 4</span>
+                    <span class="text-sm font-bold text-slate-800 flex items-center justify-between">
+                        4. Descobrir
+                        <i class="fa-solid fa-magnifying-glass text-xs text-slate-400"></i>
+                    </span>
+                </button>
+
+                <button onclick="goToStep(5)" id="step-btn-5" class="step-card flex flex-col p-3 rounded-2xl border border-slate-200 bg-white text-left transition hover:border-gBlue">
+                    <span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Passo 5</span>
+                    <span class="text-sm font-bold text-slate-800 flex items-center justify-between">
+                        5. Insight
+                        <i class="fa-solid fa-lightbulb text-xs text-slate-400"></i>
+                    </span>
+                </button>
+
+                <button onclick="goToStep(6)" id="step-btn-6" class="step-card flex flex-col p-3 rounded-2xl border border-slate-200 bg-white text-left transition hover:border-gBlue">
+                    <span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">Passo 6</span>
+                    <span class="text-sm font-bold text-slate-800 flex items-center justify-between">
+                        6. Limitações
+                        <i class="fa-solid fa-shield-cat text-xs text-slate-400"></i>
+                    </span>
+                </button>
+
+            </div>
+        </nav>
+
+        <!-- SEÇÕES DE CONTEÚDO -->
+
+        <!-- PASSO 1: COLETAR -->
+        <section id="step-1" class="step-section fade-in">
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm mb-6">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-100">
+                    <div>
+                        <div class="inline-flex items-center space-x-2 text-gBlue font-semibold text-xs uppercase tracking-wider mb-1">
+                            <i class="fa-solid fa-database"></i> <span>Etapa 1: Coleta e Inspeção de Dados Brutos</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-800">Tabela de Registros Brutos da Rotina Acadêmica</h3>
+                        <p class="text-slate-600 text-sm mt-1">
+                            <strong>O que é um Dado?</strong> Dados são registros isolados de eventos ou observações. Antes de buscar respostas, precisamos inspecionar o que foi coletado sem alterar nada.
+                        </p>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-100 p-4 rounded-2xl max-w-md text-xs text-blue-900 flex items-start space-x-3">
+                        <i class="fa-solid fa-circle-info text-gBlue text-base mt-0.5"></i>
+                        <div>
+                            <strong>Observação importante:</strong> Estes dados são inteiramente <em>fictícios</em> para fins educacionais. Representam registros diários de um aluno fictício.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros da Tabela -->
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                        <label class="text-xs font-semibold text-slate-600">Filtrar por Disciplina:</label>
+                        <select id="filter-subject" onchange="renderRawTable()" class="text-xs font-medium bg-white border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-gBlue">
+                            <option value="ALL">Todas as Disciplinas</option>
+                            <option value="Cálculo I">Cálculo I</option>
+                            <option value="Algoritmos">Algoritmos</option>
+                            <option value="Física Geral">Física Geral</option>
+                            <option value="Metodologia">Metodologia</option>
+                        </select>
+
+                        <label class="text-xs font-semibold text-slate-600 ml-0 sm:ml-2">Método:</label>
+                        <select id="filter-method" onchange="renderRawTable()" class="text-xs font-medium bg-white border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-gBlue">
+                            <option value="ALL">Todos os Métodos</option>
+                            <option value="Pomodoro">Pomodoro</option>
+                            <option value="Leitura Ativa">Leitura Ativa</option>
+                            <option value="Resolução Exercícios">Resolução Exercícios</option>
+                            <option value="Resumos">Resumos</option>
+                        </select>
+                    </div>
+                    <div class="text-xs text-slate-500">
+                        Mostrando <span id="raw-count" class="font-bold text-slate-800">0</span> registros
+                    </div>
+                </div>
+
+                <!-- Tabela de Dados Brutos -->
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-xs text-left text-slate-700">
+                        <thead class="bg-slate-100 font-semibold text-slate-700 uppercase text-[11px] tracking-wider border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">ID</th>
+                                <th class="p-3">Disciplina</th>
+                                <th class="p-3">Duração (min)</th>
+                                <th class="p-3">Atividades</th>
+                                <th class="p-3">Dificuldade</th>
+                                <th class="p-3">Prazo (Dias)</th>
+                                <th class="p-3">Atrasada?</th>
+                                <th class="p-3">Método</th>
+                                <th class="p-3">Horário</th>
+                                <th class="p-3">Produtividade</th>
+                            </tr>
+                        </thead>
+                        <tbody id="raw-table-body" class="divide-y divide-slate-100">
+                            <!-- Inserido via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Guia de Progresso -->
+                <div class="mt-8 flex justify-end">
+                    <button onclick="goToStep(2)" class="bg-gBlue hover:bg-gBlue-hover text-white font-semibold text-sm px-6 py-3 rounded-xl shadow-md transition flex items-center space-x-2">
+                        <span>Avançar para: 2. Preparar Dados</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PASSO 2: PREPARAR -->
+        <section id="step-2" class="step-section hidden fade-in">
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm mb-6">
+                <div class="mb-6 pb-6 border-b border-slate-100">
+                    <div class="inline-flex items-center space-x-2 text-gBlue font-semibold text-xs uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-broom"></i> <span>Etapa 2: Higienização e Tratamento de Inconsistências</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800">Identificando e Preparando Anomalias nos Dados</h3>
+                    <p class="text-slate-600 text-sm mt-1">
+                        Dados reais ou simulados raramente estão prontos para análise imediata. Registros podem conter <strong>valores nulos, erros de digitação, duplicidades</strong> ou inconsistências conceituais.
+                    </p>
+                </div>
+
+                <!-- Painel de Inspecao Interativa -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900">
+                        <div class="flex items-center space-x-2 font-bold text-sm mb-1">
+                            <i class="fa-solid fa-circle-question text-amber-600"></i>
+                            <span>Valores Ausentes (Null)</span>
+                        </div>
+                        <p class="text-xs text-amber-800 leading-relaxed">
+                            Algumas sessões não registraram a produtividade percebida ou o método utilizado.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900">
+                        <div class="flex items-center space-x-2 font-bold text-sm mb-1">
+                            <i class="fa-solid fa-copy text-rose-600"></i>
+                            <span>Registros Duplicados</span>
+                        </div>
+                        <p class="text-xs text-rose-800 leading-relaxed">
+                            O mesmo evento foi cadastrado duas vezes com os mesmos parâmetros exatos.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-purple-50 border border-purple-200 text-purple-900">
+                        <div class="flex items-center space-x-2 font-bold text-sm mb-1">
+                            <i class="fa-solid fa-triangle-exclamation text-purple-600"></i>
+                            <span>Outliers / Inconsistências</span>
+                        </div>
+                        <p class="text-xs text-purple-800 leading-relaxed">
+                            Registro de sessão de "600 minutos" (10 horas seguidas em uma disciplina).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Ações de Tratamento Guiadas -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-6">
+                    <h4 class="font-bold text-slate-800 text-sm mb-3 flex items-center">
+                        <i class="fa-solid fa-sliders text-gBlue mr-2"></i> Aplique as Regras de Limpeza Ativas:
+                    </h4>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <label class="flex items-center p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-gBlue transition text-xs font-medium">
+                            <input type="checkbox" id="clean-nulls" onchange="updatePreparedData()" class="rounded text-gBlue focus:ring-gBlue mr-2.5 h-4 w-4">
+                            <span>Remover ou Tratar Registros Ausentes</span>
+                        </label>
+
+                        <label class="flex items-center p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-gBlue transition text-xs font-medium">
+                            <input type="checkbox" id="clean-duplicates" onchange="updatePreparedData()" class="rounded text-gBlue focus:ring-gBlue mr-2.5 h-4 w-4">
+                            <span>Dedeplicar Linhas Idênticas</span>
+                        </label>
+
+                        <label class="flex items-center p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-gBlue transition text-xs font-medium">
+                            <input type="checkbox" id="clean-outliers" onchange="updatePreparedData()" class="rounded text-gBlue focus:ring-gBlue mr-2.5 h-4 w-4">
+                            <span>Ajustar Outliers Extremos (> 240 min)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Tabela Comparativa e Status -->
+                <div class="mb-4 flex items-center justify-between text-xs">
+                    <span class="font-semibold text-slate-700">Visualização dos Dados Após Tratamento Selecionado:</span>
+                    <span id="cleaning-status-badge" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-medium">
+                        Dados sem tratamento completo
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-slate-200 max-h-80 overflow-y-auto">
+                    <table class="w-full text-xs text-left text-slate-700">
+                        <thead class="bg-slate-100 font-semibold text-slate-700 uppercase text-[11px] tracking-wider border-b border-slate-200 sticky top-0">
+                            <tr>
+                                <th class="p-3">ID</th>
+                                <th class="p-3">Disciplina</th>
+                                <th class="p-3">Duração</th>
+                                <th class="p-3">Método</th>
+                                <th class="p-3">Produtividade</th>
+                                <th class="p-3">Status do Dado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prep-table-body" class="divide-y divide-slate-100">
+                            <!-- Inserido via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Conclusão da Etapa 2 -->
+                <div class="mt-8 flex justify-between items-center">
+                    <button onclick="goToStep(1)" class="text-slate-600 hover:text-slate-900 font-semibold text-sm px-4 py-2 rounded-xl transition">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Voltar
+                    </button>
+                    <button onclick="goToStep(3)" class="bg-gBlue hover:bg-gBlue-hover text-white font-semibold text-sm px-6 py-3 rounded-xl shadow-md transition flex items-center space-x-2">
+                        <span>Avançar para: 3. Visualizar Graficamente</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PASSO 3: VISUALIZAR -->
+        <section id="step-3" class="step-section hidden fade-in">
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm mb-6">
+                <div class="mb-6 pb-6 border-b border-slate-100">
+                    <div class="inline-flex items-center space-x-2 text-gBlue font-semibold text-xs uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-chart-column"></i> <span>Etapa 3: Exploração Visual de Variáveis</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800">Transformando Tabelas em Gráficos Compreensíveis</h3>
+                    <p class="text-slate-600 text-sm mt-1">
+                        A visualização ajuda o cérebro a identificar formas, tendências e distribuições que seriam difíceis de enxergar em tabelas brutas.
+                    </p>
+                </div>
+
+                <!-- Seletor de Gráfico -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-6">
+                    <button onclick="selectChart('hoursBySubject')" id="chart-tab-1" class="p-3 rounded-2xl border text-left transition font-medium text-xs border-gBlue bg-gBlue-light/50 text-gBlue">
+                        <div class="font-bold mb-0.5"><i class="fa-solid fa-clock mr-1"></i> Duração por Disciplina</div>
+                        <div class="text-[11px] text-slate-500">Total de minutos acumulados</div>
+                    </button>
+
+                    <button onclick="selectChart('methodDistribution')" id="chart-tab-2" class="p-3 rounded-2xl border border-slate-200 text-left transition hover:border-gBlue font-medium text-xs text-slate-700">
+                        <div class="font-bold mb-0.5"><i class="fa-solid fa-chart-pie mr-1"></i> Métodos de Estudo</div>
+                        <div class="text-[11px] text-slate-500">Proporção das técnicas usadas</div>
+                    </button>
+
+                    <button onclick="selectChart('productivityByDuration')" id="chart-tab-3" class="p-3 rounded-2xl border border-slate-200 text-left transition hover:border-gBlue font-medium text-xs text-slate-700">
+                        <div class="font-bold mb-0.5"><i class="fa-solid fa-bolt mr-1"></i> Produtividade vs Duração</div>
+                        <div class="text-[11px] text-slate-500">Relação duração / percepção</div>
+                    </button>
+
+                    <button onclick="selectChart('latenessBySubject')" id="chart-tab-4" class="p-3 rounded-2xl border border-slate-200 text-left transition hover:border-gBlue font-medium text-xs text-slate-700">
+                        <div class="font-bold mb-0.5"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Atividades Atrasadas</div>
+                        <div class="text-[11px] text-slate-500">Frequência por matéria</div>
+                    </button>
+                </div>
+
+                <!-- Área do Canvas do Gráfico -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-6 mb-6">
+                    <div class="h-72 sm:h-96 w-full relative">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                    <div id="chart-explanation" class="mt-4 p-4 bg-white rounded-xl border border-slate-200 text-xs text-slate-600 leading-relaxed">
+                        <!-- Explicação do gráfico dinâmico -->
+                    </div>
+                </div>
+
+                <!-- Navegação -->
+                <div class="mt-8 flex justify-between items-center">
+                    <button onclick="goToStep(2)" class="text-slate-600 hover:text-slate-900 font-semibold text-sm px-4 py-2 rounded-xl transition">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Voltar
+                    </button>
+                    <button onclick="goToStep(4)" class="bg-gBlue hover:bg-gBlue-hover text-white font-semibold text-sm px-6 py-3 rounded-xl shadow-md transition flex items-center space-x-2">
+                        <span>Avançar para: 4. Descobrir Padrões</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PASSO 4: DESCOBRIR -->
+        <section id="step-4" class="step-section hidden fade-in">
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm mb-6">
+                <div class="mb-6 pb-6 border-b border-slate-100">
+                    <div class="inline-flex items-center space-x-2 text-gBlue font-semibold text-xs uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-magnifying-glass"></i> <span>Etapa 4: Identificação de Padrões e Recorrências</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800">Investigando Padrões Observados</h3>
+                    <p class="text-slate-600 text-sm mt-1">
+                        Um <strong>Padrão</strong> é uma tendência ou regularidade observada em múltiplos registros. Clique nos cards abaixo para investigar as evidências que sustentam cada padrão.
+                    </p>
+                </div>
+
+                <!-- Grid de Padrões -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    
+                    <div onclick="investigatePattern(1)" class="p-5 rounded-2xl border border-slate-200 hover:border-gBlue cursor-pointer bg-slate-50/50 hover:bg-white transition group">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="px-2.5 py-1 rounded-md bg-blue-100 text-gBlue font-bold text-[10px] uppercase">Padrão A</span>
+                            <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-gBlue transition"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-2">Sessões de 45–60 min têm maior índice de alta produtividade</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            No conjunto de dados, blocos intermediários aparecem com avaliações de produtividade significativamente superiores aos blocos exaustivos (> 120 min).
+                        </p>
+                    </div>
+
+                    <div onclick="investigatePattern(2)" class="p-5 rounded-2xl border border-slate-200 hover:border-gBlue cursor-pointer bg-slate-50/50 hover:bg-white transition group">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="px-2.5 py-1 rounded-md bg-amber-100 text-amber-800 font-bold text-[10px] uppercase">Padrão B</span>
+                            <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-gBlue transition"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-2">Atividades com prazos curtos (≤ 1 dia) concentram a maioria dos atrasos</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            No conjunto de dados, as tarefas marcadas como atrasadas ocorrem predominantemente quando o tempo disponível para realização era de apenas 1 dia.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Painel de Evidência Detalhada -->
+                <div id="pattern-evidence-panel" class="hidden bg-blue-50/60 border border-blue-200 rounded-2xl p-6 mb-6">
+                    <div class="flex items-center space-x-2 text-gBlue font-bold text-sm mb-3">
+                        <i class="fa-solid fa-microscope"></i>
+                        <span id="pattern-title">Evidências da Investigação</span>
+                    </div>
+                    <div id="pattern-details" class="text-xs text-slate-700 leading-relaxed space-y-2">
+                        <!-- Conteúdo preenchido dinamicamente -->
+                    </div>
+                </div>
+
+                <!-- Navegação -->
+                <div class="mt-8 flex justify-between items-center">
+                    <button onclick="goToStep(3)" class="text-slate-600 hover:text-slate-900 font-semibold text-sm px-4 py-2 rounded-xl transition">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Voltar
+                    </button>
+                    <button onclick="goToStep(5)" class="bg-gBlue hover:bg-gBlue-hover text-white font-semibold text-sm px-6 py-3 rounded-xl shadow-md transition flex items-center space-x-2">
+                        <span>Avançar para: 5. Do Padrão ao Insight</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PASSO 5: INSIGHT -->
+        <section id="step-5" class="step-section hidden fade-in">
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm mb-6">
+                <div class="mb-6 pb-6 border-b border-slate-100">
+                    <div class="inline-flex items-center space-x-2 text-gBlue font-semibold text-xs uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-lightbulb"></i> <span>Etapa 5: Formulação de Insights Fundamentados</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800">Do Dado ao Insight: A Hierarquia do Conhecimento</h3>
+                    <p class="text-slate-600 text-sm mt-1">
+                        Um <strong>Insight</strong> não é um "palpite" ou "achismo". É uma compreensão aprofundada obtida ao conectar dados brutos a padrões contextualizados.
+                    </p>
+                </div>
+
+                <!-- Esquema Tríade Didático -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    
+                    <!-- Dado -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 relative">
+                        <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-700 font-bold flex items-center justify-center text-xs mb-3">1</div>
+                        <span class="text-xs uppercase font-bold text-slate-500 tracking-wider">Passo Inicial</span>
+                        <h4 class="text-base font-bold text-slate-800 my-1">O Dado (Fato)</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed bg-white p-3 rounded-xl border border-slate-200">
+                            "Na terça-feira, a sessão de estudo de Cálculo durou 45 minutos com produtividade 'Alta'."
+                        </p>
+                        <div class="mt-3 text-[11px] text-slate-500 italic">
+                            * Registro individual e isolado.
+                        </div>
+                    </div>
+
+                    <!-- Padrão -->
+                    <div class="bg-blue-50/50 border border-blue-200 rounded-2xl p-5 relative">
+                        <div class="w-8 h-8 rounded-full bg-blue-200 text-gBlue font-bold flex items-center justify-center text-xs mb-3">2</div>
+                        <span class="text-xs uppercase font-bold text-gBlue tracking-wider">Agrupação</span>
+                        <h4 class="text-base font-bold text-slate-800 my-1">O Padrão (Tendência)</h4>
+                        <p class="text-xs text-slate-700 leading-relaxed bg-white p-3 rounded-xl border border-blue-100">
+                            "Em 75% dos registros, sessões de 45–60 min coincidem com percepção de Alta Produtividade."
+                        </p>
+                        <div class="mt-3 text-[11px] text-blue-700 italic">
+                            * Recorrência observada em múltiplos registros.
+                        </div>
+                    </div>
+
+                    <!-- Insight -->
+                    <div class="bg-emerald-50/50 border border-emerald-200 rounded-2xl p-5 relative">
+                        <div class="w-8 h-8 rounded-full bg-emerald-200 text-emerald-800 font-bold flex items-center justify-center text-xs mb-3">3</div>
+                        <span class="text-xs uppercase font-bold text-emerald-700 tracking-wider">Interpretação</span>
+                        <h4 class="text-base font-bold text-slate-800 my-1">O Insight (Ação/Compreensão)</h4>
+                        <p class="text-xs text-slate-700 leading-relaxed bg-white p-3 rounded-xl border border-emerald-100">
+                            "A duração moderada das sessões parece favorecer o foco sustentado, tornando a divisão em blocos de ~50 min uma hipótese valiosa a testar na rotina."
+                        </p>
+                        <div class="mt-3 text-[11px] text-emerald-700 italic">
+                            * Compreensão contextualizada e acionável.
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Destaque de Precaução -->
+                <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-start space-x-3">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-600 text-base mt-0.5"></i>
+                    <div>
+                        <strong>Atenção Metodológica:</strong> Um insight gerado a partir de dados passados indica uma <em>oportunidade de investigação</em>, não uma verdade absoluta e imutável para o futuro.
+                    </div>
+                </div>
+
+                <!-- Navegação -->
+                <div class="mt-8 flex justify-between items-center">
+                    <button onclick="goToStep(4)" class="text-slate-600 hover:text-slate-900 font-semibold text-sm px-4 py-2 rounded-xl transition">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Voltar
+                    </button>
+                    <button onclick="goToStep(6)" class="bg-gBlue hover:bg-gBlue-hover text-white font-semibold text-sm px-6 py-3 rounded-xl shadow-md transition flex items-center space-x-2">
+                        <span>Avançar para: 6. Reconhecer Limitações</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PASSO 6: LIMITAÇÕES -->
+        <section id="step-6" class="step-section hidden fade-in">
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm mb-6">
+                <div class="mb-6 pb-6 border-b border-slate-100">
+                    <div class="inline-flex items-center space-x-2 text-gRed font-semibold text-xs uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-shield-cat"></i> <span>Etapa 6: Pensamento Crítico e Limitações</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800">O que os dados NÃO podem nos dizer?</h3>
+                    <p class="text-slate-600 text-sm mt-1">
+                        A etapa mais crítica de um analista de dados é reconhecer os limites da análise para evitar conclusões precipitadas ou falsas.
+                    </p>
+                </div>
+
+                <!-- Princípios Fundamentais -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                        <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider mb-2 text-gRed flex items-center">
+                            <i class="fa-solid fa-xmark mr-1.5"></i> Correlação ≠ Causalidade
+                        </h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Apenas porque duas variáveis variam juntas (ex: estudar ouvindo música instrumental e tirar notas altas) não significa que uma causou a outra. Pode haver variáveis ocultas (ex: tempo dedicado ao estudo).
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                        <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider mb-2 text-gRed flex items-center">
+                            <i class="fa-solid fa-users-slash mr-1.5"></i> Amostra Restrita e Subjetividade
+                        </h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Dados de um único aluno simulado não se aplicam a todos os estudantes do mundo. Além disso, a "Produtividade Percebida" é um sentimento subjetivo, não uma medição exata e neutra.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Quiz de Desafio / Teste de Interpretação -->
+                <div class="bg-slate-900 text-white rounded-2xl p-6 mb-6">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <span class="px-2.5 py-1 rounded-full bg-gYellow text-slate-900 font-bold text-[10px] uppercase">Desafio Prático</span>
+                        <h4 class="font-bold text-sm">Teste seu Raciocínio Crítico: Essa afirmação é válida?</h4>
+                    </div>
+
+                    <div id="quiz-container" class="space-y-4">
+                        <p id="quiz-question" class="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
+                            "Os dados mostram que a disciplina de Cálculo I acumulou o maior número de horas estudadas. Logo, Cálculo I é comprovadamente a matéria mais difícil para todos os alunos."
+                        </p>
+
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <button onclick="answerQuiz(true)" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl border border-slate-700 transition">
+                                <i class="fa-solid fa-check text-gGreen mr-1.5"></i> Podemos Concluir Isso
+                            </button>
+                            <button onclick="answerQuiz(false)" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl border border-slate-700 transition">
+                                <i class="fa-solid fa-xmark text-gRed mr-1.5"></i> NÃO Podemos Concluir Isso
+                            </button>
+                        </div>
+
+                        <div id="quiz-feedback" class="hidden mt-4 p-4 rounded-xl text-xs leading-relaxed">
+                            <!-- Feedback via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conclusão Geral -->
+                <div class="mt-8 flex justify-between items-center border-t border-slate-100 pt-6">
+                    <button onclick="goToStep(5)" class="text-slate-600 hover:text-slate-900 font-semibold text-sm px-4 py-2 rounded-xl transition">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Voltar
+                    </button>
+                    <button onclick="resetProcess()" class="bg-gGreen hover:bg-emerald-600 text-white font-semibold text-sm px-6 py-3 rounded-xl shadow-md transition flex items-center space-x-2">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Recomeçar a Jornada</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p><strong>Do Dado ao Insight</strong> — Projeto Educacional Aberto sobre Letramento em Dados.</p>
+            <p class="mt-1 text-slate-400">Todos os dados exibidos nesta plataforma são 100% fictícios e simulados para ensino explícito do método científico e analítico.</p>
+        </div>
+    </footer>
+
+    <!-- LÓGICA EM JAVASCRIPT -->
+    <script>
+        // Data Store (Dados Simulados com Inconsistências propositais)
+        const rawAcademicData = [
+            { id: 101, subject: 'Cálculo I', duration: 45, activities: 2, difficulty: 'Alta', deadlineDays: 3, late: 'Não', method: 'Pomodoro', timeSlot: 'Manhã', productivity: 'Alta' },
+            { id: 102, subject: 'Algoritmos', duration: 120, activities: 5, difficulty: 'Média', deadlineDays: 1, late: 'Sim', method: 'Resolução Exercícios', timeSlot: 'Noite', productivity: 'Média' },
+            { id: 103, subject: 'Física Geral', duration: 30, activities: 1, difficulty: 'Alta', deadlineDays: 5, late: 'Não', method: 'Leitura Ativa', timeSlot: 'Tarde', productivity: 'Baixa' },
+            { id: 104, subject: 'Metodologia', duration: 60, activities: 1, difficulty: 'Baixa', deadlineDays: 7, late: 'Não', method: 'Resumos', timeSlot: 'Manhã', productivity: 'Alta' },
+            { id: 105, subject: 'Cálculo I', duration: 50, activities: 3, difficulty: 'Alta', deadlineDays: 2, late: 'Não', method: 'Pomodoro', timeSlot: 'Tarde', productivity: 'Alta' },
+            { id: 106, subject: 'Algoritmos', duration: null, activities: 2, difficulty: 'Média', deadlineDays: 4, late: 'Não', method: 'Resolução Exercícios', timeSlot: 'Noite', productivity: null }, // Nulo
+            { id: 107, subject: 'Física Geral', duration: 600, activities: 4, difficulty: 'Alta', deadlineDays: 1, late: 'Sim', method: 'Resolução Exercícios', timeSlot: 'Madrugada', productivity: 'Baixa' }, // Outlier
+            { id: 105, subject: 'Cálculo I', duration: 50, activities: 3, difficulty: 'Alta', deadlineDays: 2, late: 'Não', method: 'Pomodoro', timeSlot: 'Tarde', productivity: 'Alta' }, // Duplicado de 105
+            { id: 108, subject: 'Metodologia', duration: 40, activities: 1, difficulty: 'Baixa', deadlineDays: 6, late: 'Não', method: 'Resumos', timeSlot: 'Tarde', productivity: 'Média' },
+            { id: 109, subject: 'Cálculo I', duration: 90, activities: 4, difficulty: 'Alta', deadlineDays: 2, late: 'Sim', method: 'Leitura Ativa', timeSlot: 'Noite', productivity: 'Média' },
+            { id: 110, subject: 'Algoritmos', duration: 50, activities: 2, difficulty: 'Média', deadlineDays: 5, late: 'Não', method: 'Pomodoro', timeSlot: 'Manhã', productivity: 'Alta' }
+        ];
+
+        let currentStep = 1;
+        let activeChartInstance = null;
+
+        // Render da Tabela Bruta (Etapa 1)
+        function renderRawTable() {
+            const subjectFilter = document.getElementById('filter-subject').value;
+            const methodFilter = document.getElementById('filter-method').value;
+            const tbody = document.getElementById('raw-table-body');
+            
+            tbody.innerHTML = '';
+
+            const filtered = rawAcademicData.filter(item => {
+                const matchSub = (subjectFilter === 'ALL' || item.subject === subjectFilter);
+                const matchMet = (methodFilter === 'ALL' || item.method === methodFilter);
+                return matchSub && matchMet;
+            });
+
+            document.getElementById('raw-count').textContent = filtered.length;
+
+            filtered.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
+
+                // Destaques de inconsistências
+                const isNull = item.duration === null || item.productivity === null;
+                const isOutlier = item.duration > 240;
+                
+                tr.innerHTML = `
+                    <td class="p-3 font-mono text-slate-500">${item.id}</td>
+                    <td class="p-3 font-semibold text-slate-800">${item.subject}</td>
+                    <td class="p-3 ${isOutlier ? 'bg-purple-100 font-bold text-purple-900 rounded' : ''}">
+                        ${item.duration !== null ? item.duration + ' min' : '<span class="text-amber-600 font-bold">Ausente</span>'}
+                    </td>
+                    <td class="p-3">${item.activities}</td>
+                    <td class="p-3">${item.difficulty}</td>
+                    <td class="p-3">${item.deadlineDays}d</td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${item.late === 'Sim' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-600'}">
+                            ${item.late}
+                        </span>
+                    </td>
+                    <td class="p-3">${item.method}</td>
+                    <td class="p-3">${item.timeSlot}</td>
+                    <td class="p-3 ${isNull ? 'bg-amber-100 text-amber-900 font-bold rounded' : ''}">
+                        ${item.productivity !== null ? item.productivity : '<span class="text-amber-600 font-bold">Ausente</span>'}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Atualização dos Dados Preparados (Etapa 2)
+        function updatePreparedData() {
+            const cleanNulls = document.getElementById('clean-nulls').checked;
+            const cleanDuplicates = document.getElementById('clean-duplicates').checked;
+            const cleanOutliers = document.getElementById('clean-outliers').checked;
+
+            let data = [...rawAcademicData];
+            let badges = [];
+
+            // 1. Duplicatas
+            if (cleanDuplicates) {
+                const seen = new Set();
+                data = data.filter(item => {
+                    const key = `${item.id}-${item.subject}-${item.duration}-${item.timeSlot}`;
+                    if (seen.has(key)) return false;
+                    seen.add(key);
+                    return true;
+                });
+                badges.push('Dedeplicado');
+            }
+
+            // 2. Nulos
+            if (cleanNulls) {
+                data = data.filter(item => item.duration !== null && item.productivity !== null);
+                badges.push('Sem Ausentes');
+            }
+
+            // 3. Outliers
+            if (cleanOutliers) {
+                data = data.map(item => {
+                    if (item.duration > 240) {
+                        return { ...item, duration: 120, outlierAdjusted: true };
+                    }
+                    return item;
+                });
+                badges.push('Outliers Ajustados');
+            }
+
+            // Atualiza Badge de Status
+            const badgeEl = document.getElementById('cleaning-status-badge');
+            if (badges.length > 0) {
+                badgeEl.className = "px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold";
+                badgeEl.textContent = "Tratamentos Aplicados: " + badges.join(', ');
+            } else {
+                badgeEl.className = "px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-medium";
+                badgeEl.textContent = "Dados brutos sem tratamento ativo";
+            }
+
+            // Render Tabela de Preparação
+            const tbody = document.getElementById('prep-table-body');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
+
+                let statusText = '<span class="text-emerald-600 font-semibold">Válido</span>';
+                if (item.duration === null || item.productivity === null) {
+                    statusText = '<span class="text-amber-600 font-semibold">Ausente</span>';
+                } else if (item.duration > 240) {
+                    statusText = '<span class="text-purple-600 font-semibold">Outlier (10h)</span>';
+                } else if (item.outlierAdjusted) {
+                    statusText = '<span class="text-blue-600 font-semibold">Ajustado para 120 min</span>';
+                }
+
+                tr.innerHTML = `
+                    <td class="p-3 font-mono text-slate-500">${item.id}</td>
+                    <td class="p-3 font-semibold text-slate-800">${item.subject}</td>
+                    <td class="p-3">${item.duration !== null ? item.duration + ' min' : '-'}</td>
+                    <td class="p-3">${item.method}</td>
+                    <td class="p-3">${item.productivity || '-'}</td>
+                    <td class="p-3">${statusText}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Troca de Telas (Stepper)
+        function goToStep(step) {
+            currentStep = step;
+
+            // Esconde todas as seções
+            document.querySelectorAll('.step-section').forEach(sec => sec.classList.add('hidden'));
+            
+            // Mostra a seção ativa
+            const activeSec = document.getElementById(`step-${step}`);
+            if (activeSec) activeSec.classList.remove('hidden');
+
+            // Atualiza botões da navegação
+            for (let i = 1; i <= 6; i++) {
+                const btn = document.getElementById(`step-btn-${i}`);
+                if (btn) {
+                    if (i === step) {
+                        btn.className = "step-card active flex flex-col p-3 rounded-2xl border border-gBlue bg-white text-left shadow-sm";
+                        btn.querySelector('span').className = "text-[10px] uppercase tracking-wider font-bold text-gBlue mb-1";
+                    } else {
+                        btn.className = "step-card flex flex-col p-3 rounded-2xl border border-slate-200 bg-white text-left transition hover:border-gBlue";
+                        btn.querySelector('span').className = "text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1";
+                    }
+                }
+            }
+
+            // Inicializa gráficos se estiver no passo 3
+            if (step === 3) {
+                setTimeout(() => selectChart('hoursBySubject'), 50);
+            }
+
+            window.scrollTo({ top: 100, behavior: 'smooth' });
+        }
+
+        // Renderização dos Gráficos com Chart.js (Etapa 3)
+        function selectChart(chartType) {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            const expEl = document.getElementById('chart-explanation');
+
+            // Reseta abas
+            ['chart-tab-1', 'chart-tab-2', 'chart-tab-3', 'chart-tab-4'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.className = "p-3 rounded-2xl border border-slate-200 text-left transition hover:border-gBlue font-medium text-xs text-slate-700";
+                }
+            });
+
+            if (activeChartInstance) activeChartInstance.destroy();
+
+            // Configuração conforme o tipo
+            if (chartType === 'hoursBySubject') {
+                document.getElementById('chart-tab-1').className = "p-3 rounded-2xl border border-gBlue bg-gBlue-light/50 text-left transition font-medium text-xs text-gBlue";
+                
+                activeChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Cálculo I', 'Algoritmos', 'Física Geral', 'Metodologia'],
+                        datasets: [{
+                            label: 'Minutos Totais Registrados',
+                            data: [185, 170, 630, 100], // Inclui dados brutos demonstrativos
+                            backgroundColor: ['#1A73E8', '#34A853', '#FBBC04', '#EA4335'],
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } }
+                    }
+                });
+
+                expEl.innerHTML = `<strong>O que esta visualização mostra?</strong> Acúmulo de minutos por disciplina. Repare como Física Geral apresenta um valor desproporcional devido ao <em>outlier de 600 min</em> identificado na etapa de preparação!`;
+
+            } else if (chartType === 'methodDistribution') {
+                document.getElementById('chart-tab-2').className = "p-3 rounded-2xl border border-gBlue bg-gBlue-light/50 text-left transition font-medium text-xs text-gBlue";
+
+                activeChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Pomodoro', 'Resolução Exercícios', 'Leitura Ativa', 'Resumos'],
+                        datasets: [{
+                            data: [3, 3, 2, 2],
+                            backgroundColor: ['#1A73E8', '#34A853', '#FBBC04', '#EA4335']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+
+                expEl.innerHTML = `<strong>O que esta visualização mostra?</strong> A proporção de vezes em que cada método foi escolhido. Ajuda a entender a diversidade de abordagens na rotina.`;
+
+            } else if (chartType === 'productivityByDuration') {
+                document.getElementById('chart-tab-3').className = "p-3 rounded-2xl border border-gBlue bg-gBlue-light/50 text-left transition font-medium text-xs text-gBlue";
+
+                activeChartInstance = new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Sessões de Estudo',
+                            data: [
+                                { x: 45, y: 3 }, { x: 120, y: 2 }, { x: 30, y: 1 },
+                                { x: 60, y: 3 }, { x: 50, y: 3 }, { x: 40, y: 2 }, { x: 90, y: 2 }
+                            ],
+                            backgroundColor: '#1A73E8'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { title: { display: true, text: 'Duração da Sessão (Minutos)' } },
+                            y: { 
+                                title: { display: true, text: 'Produtividade (1=Baixa, 2=Média, 3=Alta)' },
+                                ticks: { stepSize: 1 }
+                            }
+                        }
+                    }
+                });
+
+                expEl.innerHTML = `<strong>O que esta visualização mostra?</strong> A relação entre duração e percepção de produtividade. Notamos que os pontos no topo (Produtividade Alta = 3) estão concentrados na faixa de 45 a 60 minutos.`;
+
+            } else if (chartType === 'latenessBySubject') {
+                document.getElementById('chart-tab-4').className = "p-3 rounded-2xl border border-gBlue bg-gBlue-light/50 text-left transition font-medium text-xs text-gBlue";
+
+                activeChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Cálculo I', 'Algoritmos', 'Física Geral', 'Metodologia'],
+                        datasets: [{
+                            label: 'Atividades Atrasadas',
+                            data: [1, 1, 1, 0],
+                            backgroundColor: '#EA4335',
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } }
+                    }
+                });
+
+                expEl.innerHTML = `<strong>O que esta visualização mostra?</strong> O número absoluto de entregas em atraso registradas em cada matéria.`;
+            }
+        }
+
+        // Investigação de Padrões (Etapa 4)
+        function investigatePattern(id) {
+            const panel = document.getElementById('pattern-evidence-panel');
+            const title = document.getElementById('pattern-title');
+            const details = document.getElementById('pattern-details');
+
+            panel.classList.remove('hidden');
+
+            if (id === 1) {
+                title.textContent = "Evidências do Padrão A: Duração de 45-60 min vs Produtividade";
+                details.innerHTML = `
+                    <p>• <strong>Registros analisados:</strong> IDs 101 (45 min), 104 (60 min), 105 (50 min) e 110 (50 min).</p>
+                    <p>• <strong>Constatação:</strong> 100% dessas sessões tiveram produtividade registrada como "Alta".</p>
+                    <p>• <strong>Contraste:</strong> A sessão de 120 min (ID 102) teve produtividade "Média" e a de 600 min (ID 107) teve produtividade "Baixa".</p>
+                `;
+            } else if (id === 2) {
+                title.textContent = "Evidências do Padrão B: Prazo Curto vs Ocorrência de Atrasos";
+                details.innerHTML = `
+                    <p>• <strong>Registros analisados:</strong> IDs 102 (Algoritmos, Prazo: 1 dia, Atrasou: Sim), 107 (Física Geral, Prazo: 1 dia, Atrasou: Sim) e 109 (Cálculo I, Prazo: 2 dias, Atrasou: Sim).</p>
+                    <p>• <strong>Constatação:</strong> Todos os atrasos do dataset ocorreram em atividades com prazos muito apertados (≤ 2 dias), sendo a maioria absoluta em tarefas com apenas 1 dia de prazo.</p>
+                    <p>• <strong>Alerta Metodológico:</strong> Embora os registros 102 e 107 utilizem o método "Resolução Exercícios", o fator determinante associado aos atrasos é a urgência do prazo, e não a técnica de estudo escolhida.</p>
+                `;
+            }
+        }
+
+        // Quiz / Desafio de Interpretação (Etapa 6)
+        function answerQuiz(userChoice) {
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.classList.remove('hidden');
+
+            if (userChoice === false) {
+                feedback.className = "mt-4 p-4 rounded-xl text-xs leading-relaxed bg-emerald-950 text-emerald-200 border border-emerald-800";
+                feedback.innerHTML = `
+                    <strong class="text-emerald-400 font-bold text-sm block mb-1"><i class="fa-solid fa-circle-check mr-1"></i> Resposta Correta!</strong>
+                    Excelente raciocínio crítico. O fato de Cálculo I ter acumulado mais horas estudadas nos dados deste único aluno <strong>não prova</strong> que a disciplina é intrinsecamente a mais difícil para todas as pessoas. Outros fatores (gosto pessoal, dificuldade prévia, volume de exercícios) podem explicar o tempo dedicado.
+                `;
+            } else {
+                feedback.className = "mt-4 p-4 rounded-xl text-xs leading-relaxed bg-rose-950 text-rose-200 border border-rose-800";
+                feedback.innerHTML = `
+                    <strong class="text-rose-400 font-bold text-sm block mb-1"><i class="fa-solid fa-circle-xmark mr-1"></i> Cuidado com a Generalização!</strong>
+                    Não podemos concluir isso. Lembre-se: dados de um registro demonstrativo individual não representam uma regra universal, e maior tempo gasto não é prova direta de dificuldade absoluta.
+                `;
+            }
+        }
+
+        // Reset Geral
+        function resetProcess() {
+            document.getElementById('filter-subject').value = 'ALL';
+            document.getElementById('filter-method').value = 'ALL';
+            document.getElementById('clean-nulls').checked = false;
+            document.getElementById('clean-duplicates').checked = false;
+            document.getElementById('clean-outliers').checked = false;
+            document.getElementById('pattern-evidence-panel').classList.add('hidden');
+            document.getElementById('quiz-feedback').classList.add('hidden');
+
+            renderRawTable();
+            updatePreparedData();
+            goToStep(1);
+        }
+
+        // Inicialização ao Carregar
+        window.onload = function() {
+            renderRawTable();
+            updatePreparedData();
+        };
+    </script>
+</body>
+</html>

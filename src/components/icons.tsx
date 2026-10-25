@@ -12,15 +12,13 @@ export function SparkMark({ size = 28, className }: IconProps) {
     <svg width={size} height={size} viewBox="0 0 64 64" className={className} aria-hidden="true">
       <defs>
         <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="var(--iris)" />
-          <stop offset="55%" stopColor="var(--violet)" />
-          <stop offset="100%" stopColor="var(--magenta)" />
+          <stop offset="0%" stopColor="var(--google-blue)" />
+          <stop offset="34%" stopColor="var(--google-green)" />
+          <stop offset="68%" stopColor="var(--google-yellow)" />
+          <stop offset="100%" stopColor="var(--google-red)" />
         </linearGradient>
       </defs>
-      <path
-        d="M32 4c1 18 3 27 28 28-25 1-27 10-28 28-1-18-3-27-28-28 25-1 27-10 28-28Z"
-        fill={`url(#${id})`}
-      />
+      <path d="M32 4c1 18 3 27 28 28-25 1-27 10-28 28-1-18-3-27-28-28 25-1 27-10 28-28Z" fill={`url(#${id})`} />
     </svg>
   );
 }

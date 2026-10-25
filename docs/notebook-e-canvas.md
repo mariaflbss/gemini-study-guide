@@ -20,7 +20,7 @@ podem se sobrepor com o tempo.
 ## Um fluxo combinado (metodologia deste projeto)
 
 Um possível fluxo de trabalho que combina os dois produtos, usado como
-estrutura conceitual neste projeto de portfólio:
+estrutura conceitual neste laboratório digital:
 
 ```text
 Pesquisa

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675">
+<rect width="1200" height="675" rx="28" fill="#f7f7f5"/>
+<rect x="55" y="55" width="1090" height="565" rx="22" fill="#fff" stroke="#d9d9d4"/>
+<text x="90" y="115" fill="#202124" font-family="Arial" font-size="42" font-weight="700">DO DADO AO INSIGHT</text>
+<text x="90" y="150" fill="#6b7280" font-family="Arial" font-size="22">Entendendo minha vida acadêmica</text>
+<g fill="#e8f0fe"><rect x="90" y="205" width="180" height="58" rx="12"/><rect x="290" y="205" width="180" height="58" rx="12"/><rect x="490" y="205" width="180" height="58" rx="12"/><rect x="690" y="205" width="180" height="58" rx="12"/></g>
+<g fill="#174ea6" font-family="Arial" font-size="18" font-weight="700"><text x="130" y="241">COLETAR</text><text x="335" y="241">PREPARAR</text><text x="540" y="241">VISUALIZAR</text><text x="745" y="241">DESCOBRIR</text></g>
+<g stroke="#4285f4" stroke-width="4" fill="none"><path d="M115 500 L115 350 L230 390 L330 320 L430 430 L530 360 L630 400 L730 300"/><path d="M115 500 L730 500"/></g>
+<g fill="#4285f4"><circle cx="115" cy="500" r="7"/><circle cx="230" cy="390" r="7"/><circle cx="330" cy="320" r="7"/><circle cx="430" cy="430" r="7"/><circle cx="530" cy="360" r="7"/><circle cx="630" cy="400" r="7"/><circle cx="730" cy="300" r="7"/></g>
+<text x="790" y="390" fill="#202124" font-family="Arial" font-size="25" font-weight="700">INSIGHT</text><text x="790" y="425" fill="#6b7280" font-family="Arial" font-size="19">padrão + evidência</text><text x="790" y="455" fill="#6b7280" font-family="Arial" font-size="19">sem confundir associação</text><text x="90" y="575" fill="#6b7280" font-family="Arial" font-size="20">Dados fictícios • preparação • visualização • limitações</text>
+</svg>

@@ -1,0 +1,76 @@
+{
+  "url": "https://gemini-study-guide.vercel.app",
+  "brand": "Laboratório mariaflbss",
+  "title": "Portfólio de aprendizagem, tecnologia e prática · Maria Fernanda Laboissiere",
+  "description": "Portfólio de aprendizagem que registra a jornada em tecnologia, a participação como Embaixadora Estudantil do Google e projetos interativos criados para transformar conceitos em prática.",
+  "name": "Maria Fernanda Laboissiere",
+  "handle": "mariaflbss",
+  "role": "Estudante de Desenvolvimento de Software Multiplataforma",
+  "tagline": "Um espaço para aprender, experimentar e transformar estudo em prática.",
+  "bio": [
+    "Sou estudante de Desenvolvimento de Software Multiplataforma na Fatec Jessen Vidal, em São José dos Campos, e participo do programa de Embaixadores Estudantis do Google.",
+    "Este portfólio registra como estudo, experimentação, documentação e projetos interativos se conectam na minha trajetória em tecnologia. Meu foco atual está em desenvolvimento de software e inteligência artificial, com interesse em transformar conceitos complexos em experiências mais claras e úteis."
+  ],
+  "interests": [
+    "Inteligência artificial",
+    "Engenharia de software",
+    "Desenvolvimento de software",
+    "Aprendizagem e tecnologia",
+    "Documentação técnica"
+  ],
+  "links": {
+    "github": "https://github.com/mariaflbss",
+    "linkedin": "",
+    "email": ""
+  },
+  "skills": [
+    {
+      "group": "Desenvolvimento web",
+      "note": "Tecnologias usadas na construção deste portfólio e dos laboratórios interativos.",
+      "items": [
+        "React",
+        "TypeScript",
+        "Vite",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Markdown"
+      ]
+    },
+    {
+      "group": "IA e ferramentas Google",
+      "note": "Tecnologias e metodologias exploradas na jornada de Embaixadora Estudantil do Google.",
+      "items": [
+        "Google Gemini",
+        "Gemini Live",
+        "Gemini Deep Research",
+        "Gemini Canvas",
+        "Engenharia de prompts"
+      ]
+    },
+    {
+      "group": "Documentação",
+      "note": "Conteúdo técnico separado da interface e conectado aos projetos publicados.",
+      "items": [
+        "Documentação técnica",
+        "Referências",
+        "Registro de processo",
+        "Análise de limitações"
+      ]
+    }
+  ],
+  "method": [
+    {
+      "label": "Explorar",
+      "text": "Começar pela pergunta, pelo contexto e pela documentação disponível."
+    },
+    {
+      "label": "Investigar",
+      "text": "Testar caminhos, comparar possibilidades e verificar se as evidências sustentam a conclusão."
+    },
+    {
+      "label": "Gerar valor",
+      "text": "Transformar aprendizados em projetos, documentação e próximos passos que possam ser reutilizados."
+    }
+  ]
+}

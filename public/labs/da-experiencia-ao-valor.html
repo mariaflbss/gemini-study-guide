@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Da Experiência ao Valor — Investigador de Competências</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        node: {
+                            bg: '#0B0F17',
+                            card: '#111827',
+                            border: '#1F2937',
+                            borderHover: '#374151',
+                        },
+                        gBlue: { DEFAULT: '#38BDF8', light: 'rgba(56, 189, 248, 0.12)', border: '#0284C7', glow: 'rgba(56, 189, 248, 0.3)' },
+                        gRed: { DEFAULT: '#F87171', light: 'rgba(248, 113, 113, 0.12)', border: '#DC2626', glow: 'rgba(248, 113, 113, 0.3)' },
+                        gYellow: { DEFAULT: '#FACC15', light: 'rgba(250, 204, 21, 0.12)', border: '#CA8A04', glow: 'rgba(250, 204, 21, 0.3)' },
+                        gGreen: { DEFAULT: '#4ADE80', light: 'rgba(74, 222, 128, 0.12)', border: '#16A34A', glow: 'rgba(74, 222, 128, 0.3)' },
+                        gPurple: { DEFAULT: '#C084FC', light: 'rgba(192, 132, 252, 0.12)', border: '#9333EA', glow: 'rgba(192, 132, 252, 0.3)' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estética do Laboratório Investigativo Escuro */
+        body {
+            background-color: #07090E;
+            color: #F1F5F9;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.07) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(192, 132, 252, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 15% 70%, rgba(74, 222, 128, 0.04) 0%, transparent 40%),
+                radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px;
+            background-attachment: fixed;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card {
+            background: rgba(21, 32, 54, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+        }
+
+        .step-transition {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glow-blue { box-shadow: 0 0 25px rgba(56, 189, 248, 0.25); }
+        .glow-amber { box-shadow: 0 0 25px rgba(250, 204, 21, 0.25); }
+        .glow-green { box-shadow: 0 0 25px rgba(74, 222, 128, 0.25); }
+
+        /* Conectores e Pulsos */
+        .pulse-node {
+            animation: nodePulse 3s infinite ease-in-out;
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.25) 51%);
+            background-size: 100% 4px;
+        }
+
+        /* Custom Scrollbar Escura */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E293B;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+
+        /* Animação de Nós SVG */
+        .node-path {
+            stroke-dasharray: 6 6;
+            animation: dashMove 30s linear infinite;
+        }
+
+        @keyframes dashMove {
+            to { stroke-dashoffset: -300; }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-sky-500 selection:text-white">
+
+    <!-- CABEÇALHO INVESTIGATIVO -->
+    <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl sticky top-0 z-40 transition-all">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-3.5">
+                <div class="relative flex items-center justify-center w-8 h-8 rounded-lg bg-slate-900 border border-slate-700">
+                    <span class="w-2 h-2 rounded-full bg-gBlue absolute -top-1 -right-1 animate-ping"></span>
+                    <i data-lucide="radar" class="w-4 h-4 text-gBlue"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-bold text-slate-100 text-base tracking-tight font-mono">LAB // INVESTIGADOR DE COMPETÊNCIAS</h1>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-sky-950 text-sky-400 border border-sky-800/50">v2.4 EV</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Da Trajetória ao Valor Real • Mapeamento Baseado em Evidências</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="toggleEducationalModal()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-sky-300 bg-sky-950/70 border border-sky-800/50 hover:bg-sky-900/50 hover:border-sky-600 transition-all">
+                    <i data-lucide="book-open" class="w-3.5 h-3.5 text-gBlue"></i>
+                    <span class="hidden sm:inline">Conceito Educativo</span>
+                </button>
+                <button onclick="resetInvestigation()" class="p-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-900 border border-transparent hover:border-slate-800 transition-all" title="Reiniciar Investigação">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full">
+
+        <!-- BARRA DE PROGRESSO DO INVESTIGADOR DE REDE -->
+        <div id="progressContainer" class="mb-8 hidden">
+            <div class="flex items-center justify-between text-xs font-mono text-slate-400 mb-2">
+                <span id="currentStepLabel" class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-gBlue"></span>
+                    Etapa 1 de 8: Contexto
+                </span>
+                <span id="progressPercentage" class="text-sky-400 font-bold">12% Analisado</span>
+            </div>
+            <div class="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden border border-slate-800 p-0.5">
+                <div id="progressBar" class="bg-gradient-to-r from-sky-500 via-yellow-400 to-emerald-400 h-full rounded-full w-[12.5%] transition-all duration-500 ease-out"></div>
+            </div>
+            
+            <!-- ETAPAS NAVEGÁVEIS (PILLS/NODES) -->
+            <div id="stepBadges" class="flex items-center gap-2 mt-4 overflow-x-auto pb-2 scrollbar-none">
+                <!-- Badges geradas via JS -->
+            </div>
+        </div>
+
+        <!-- TELA 0: SELEÇÃO DE EXPERIÊNCIA (INÍCIO) -->
+        <section id="step-0" class="step-transition block">
+            <div class="text-center max-w-3xl mx-auto my-6 sm:my-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-slate-900 text-sky-400 border border-sky-800/40 mb-4">
+                    <i data-lucide="git-commit" class="w-3.5 h-3.5"></i>
+                    <span>LABORATÓRIO DE EXTRAÇÃO DE EVIDÊNCIAS</span>
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
+                    Transforme acontecimentos em <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-amber-300 to-emerald-400">evidências de valor</span>.
+                </h2>
+                <p class="text-slate-400 text-sm sm:text-base leading-relaxed mb-8 max-w-2xl mx-auto">
+                    Uma experiência não é uma competência por si só. Investigue fatos, decisões e comportamentos para construir a rede visual de capacidades demonstradas.
+                </p>
+
+                <div class="p-4 bg-slate-900/90 border border-amber-500/30 rounded-2xl text-left text-xs text-amber-200/90 flex items-start gap-3 max-w-2xl mx-auto mb-10 shadow-lg shadow-amber-950/20">
+                    <div class="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 shrink-0 mt-0.5 border border-amber-500/20">
+                        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                    </div>
+                    <div class="leading-relaxed">
+                        <strong class="text-amber-300 block mb-0.5 font-mono text-[11px] uppercase tracking-wider">Princípio Metodológico da Investigação</strong>
+                        Não declaramos competências como verdades definitivas. Isolamos <em>evidências observáveis</em> em situações reais para inferir aplicabilidade prática.
+                    </div>
+                </div>
+            </div>
+
+            <!-- OPÇÕES DE EXPERIÊNCIA (CARDS NÓS) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <!-- Preset 1 -->
+                <div onclick="selectPreset('academic')" class="glass-card p-6 rounded-2xl hover:border-sky-500/50 hover:bg-slate-900/80 transition-all cursor-pointer group flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-sky-500/5 rounded-full blur-2xl group-hover:bg-sky-500/15 transition-all"></div>
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-sky-950/80 border border-sky-800/50 text-sky-400 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-sky-400 transition-all">
+                            <i data-lucide="users" class="w-5 h-5"></i>
+                        </div>
+                        <span class="text-[10px] font-mono font-bold text-sky-400 uppercase tracking-widest">NÓ // EQUIPE & PRAZOS</span>
+                        <h3 class="font-bold text-slate-100 text-lg mt-1 mb-2 group-hover:text-sky-300 transition-colors">Projeto Universitário sob Tensão</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                            Coordenação de um trabalho acadêmico em grupo com prazos apertados e divergências de opinião entre os membros.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-sky-400 group-hover:translate-x-1 transition-transform">
+                        <span>Investigar nó</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </div>
+                </div>
+
+                <!-- Preset 2 -->
+                <div onclick="selectPreset('crisis')" class="glass-card p-6 rounded-2xl hover:border-red-500/50 hover:bg-slate-900/80 transition-all cursor-pointer group flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-full blur-2xl group-hover:bg-red-500/15 transition-all"></div>
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-red-950/80 border border-red-800/50 text-red-400 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-red-400 transition-all">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                        </div>
+                        <span class="text-[10px] font-mono font-bold text-red-400 uppercase tracking-widest">NÓ // CRISE & ADAPTAÇÃO</span>
+                        <h3 class="font-bold text-slate-100 text-lg mt-1 mb-2 group-hover:text-red-300 transition-colors">Falha Técnica no Evento ao Vivo</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                            Gerenciamento de uma pane no sistema de apresentação 15 minutos antes da abertura de um seminário importante.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-red-400 group-hover:translate-x-1 transition-transform">
+                        <span>Investigar nó</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </div>
+                </div>
+
+                <!-- Preset 3 -->
+                <div onclick="selectPreset('custom')" class="glass-card p-6 rounded-2xl hover:border-emerald-500/50 hover:bg-slate-900/80 transition-all cursor-pointer group flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/15 transition-all"></div>
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-emerald-950/80 border border-emerald-800/50 text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-emerald-400 transition-all">
+                            <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                        </div>
+                        <span class="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest">NÓ // PERSONALIZADO</span>
+                        <h3 class="font-bold text-slate-100 text-lg mt-1 mb-2 group-hover:text-emerald-300 transition-colors">Inserir Própria Experiência</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                            Descreva um acontecimento real para rastrear suas evidências do contexto ao valor prático.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-emerald-400 group-hover:translate-x-1 transition-transform">
+                        <span>Criar investigação</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTAINER DINÂMICO DE INVESTIGAÇÃO (ETAPAS 1 A 7) -->
+        <section id="investigationContainer" class="hidden">
+            <div class="glass-panel rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+                <!-- Efeito Glow sutil no fundo do card -->
+                <div class="absolute -top-24 -right-24 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- CONCEITO DICA DE ETAPA -->
+                <div id="stepConceptBanner" class="mb-8 p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-start gap-3.5">
+                    <div class="p-2 rounded-xl bg-sky-950 text-sky-400 border border-sky-800/50 shrink-0">
+                        <i data-lucide="compass" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h4 id="conceptTitle" class="text-xs font-mono font-bold text-sky-400 uppercase tracking-wider">O que investigamos aqui?</h4>
+                        <p id="conceptDescription" class="text-xs text-slate-300 mt-1 leading-relaxed">Instrução da etapa...</p>
+                    </div>
+                </div>
+
+                <!-- TITULO DA ETAPA -->
+                <div class="mb-6">
+                    <span id="stepCategory" class="text-[11px] font-mono font-bold text-sky-400 uppercase tracking-widest">Etapa</span>
+                    <h2 id="stepTitle" class="text-2xl sm:text-3xl font-bold text-white mt-1">Título da Etapa</h2>
+                </div>
+
+                <!-- ÁREA DE INPUT / CONTEÚDO DA ETAPA -->
+                <div id="stepBody" class="min-h-[220px]">
+                    <!-- Inserido Dinamicamente via JS -->
+                </div>
+
+                <!-- NOTA DE LINGUAGEM DE EVIDÊNCIA -->
+                <div id="languageGuardrail" class="mt-6 pt-4 border-t border-slate-800/80 hidden">
+                    <p class="text-xs text-amber-300/80 italic flex items-center gap-2 font-mono">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-amber-400 shrink-0"></i>
+                        <span>Linguagem de Evidência: Evitamos afirmações categóricas absolutas. Preferimos "Esta ação demonstra propensão para mediação".</span>
+                    </p>
+                </div>
+
+                <!-- BOTÕES DE NAVEGAÇÃO -->
+                <div class="mt-8 pt-6 border-t border-slate-800/80 flex items-center justify-between">
+                    <button id="btnBack" onclick="navigateStep(-1)" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white hover:border-slate-700 font-mono text-xs transition-all disabled:opacity-30 disabled:cursor-not-allowed">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar
+                    </button>
+                    
+                    <button id="btnNext" onclick="navigateStep(1)" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-mono font-semibold text-xs transition-all shadow-lg shadow-sky-950">
+                        <span>Avançar</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TELA FINAL: MAPA VISUAL DE VALOR (ETAPA 8) -->
+        <section id="step-8" class="step-transition hidden">
+            <!-- CABEÇALHO DO MAPA -->
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div>
+                    <span class="px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-emerald-950 text-emerald-400 border border-emerald-800/50 uppercase tracking-widest inline-block mb-2">Rede Concluída // Mapa de Relações</span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">Mapa Visual: Experiência → Competências → Valor</h2>
+                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Clique nas competências identificadas para rastrear a cadeia de evidências que a sustentam.</p>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <button onclick="resetInvestigation()" class="px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-800 font-mono font-medium text-xs text-slate-300 transition-colors flex items-center gap-1.5">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Nova Investigação
+                    </button>
+                    <button onclick="printSummary()" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 font-mono font-bold text-xs text-slate-950 transition-colors flex items-center gap-1.5 shadow-lg shadow-sky-950">
+                        <i data-lucide="download" class="w-4 h-4"></i> Exportar Síntese
+                    </button>
+                </div>
+            </div>
+
+            <!-- RESUMO DA EXPERIÊNCIA INVESTIGADA (NÚCLEO CENTRAL) -->
+            <div class="glass-card p-6 rounded-3xl mb-10 border-l-4 border-l-sky-500 relative overflow-hidden">
+                <div class="flex items-center gap-2 text-sky-400 text-xs font-mono font-bold uppercase tracking-wider mb-2">
+                    <i data-lucide="database" class="w-4 h-4"></i> Núcleo // Experiência de Origem
+                </div>
+                <h3 id="summaryExpTitle" class="text-xl font-bold text-white mb-2">Título da Experiência</h3>
+                <p id="summaryExpDesc" class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-4xl">Descrição completa do contexto e da situação investigada...</p>
+            </div>
+
+            <!-- MAPA VISUAL DE NÓS E CONEXÕES -->
+            <div class="space-y-6">
+                <!-- CABEÇALHO DO FLUXOGRAMA -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center font-mono text-xs uppercase tracking-widest text-slate-500 hidden md:grid">
+                    <div class="bg-slate-900/80 py-2 rounded-lg border border-slate-800/80 text-amber-400/90 flex items-center justify-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-amber-400"></span> 1. Evidências Observadas
+                    </div>
+                    <div class="bg-slate-900/80 py-2 rounded-lg border border-slate-800/80 text-sky-400/90 flex items-center justify-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-sky-400"></span> 2. Competência Inferida
+                    </div>
+                    <div class="bg-slate-900/80 py-2 rounded-lg border border-slate-800/80 text-emerald-400/90 flex items-center justify-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span> 3. Valor Gerado Potencial
+                    </div>
+                </div>
+
+                <!-- LISTA DE NÓS CONECTADOS -->
+                <div id="nodesContainer" class="space-y-6">
+                    <!-- Gerado via JS -->
+                </div>
+            </div>
+
+            <!-- EXPLICAÇÃO DA LINGUAGEM DE SEGURANÇA -->
+            <div class="mt-10 p-6 glass-card rounded-2xl text-slate-400 text-xs leading-relaxed flex items-start gap-4">
+                <i data-lucide="info" class="w-5 h-5 text-sky-400 shrink-0 mt-0.5"></i>
+                <div>
+                    <strong class="text-slate-200 font-mono block mb-1 uppercase tracking-wider">Nota Metodológica sobre Inferência de Competências</strong>
+                    Nenhuma competência apresentada neste mapa deve ser interpretada como um rótulo permanente ou absoluto. As evidências identificadas indicam que, no contexto analisado, foram demonstrados comportamentos e decisões compatíveis com essas habilidades. O valor gerado reflete a aplicabilidade prática em novos cenários.
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="border-t border-slate-800/60 bg-slate-950/60 py-6 mt-16 font-mono text-xs text-slate-500">
+        <div class="max-w-6xl mx-auto px-4 text-center flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span>DA EXPERIÊNCIA AO VALOR // SISTEMA DE ANÁLISE DE EVIDÊNCIAS</span>
+            <span>ABORDAGEM BASEADA EM FATOS OBSERVÁVEIS</span>
+        </div>
+    </footer>
+
+    <!-- MODAL EDUCATIVO: CONCEITO -->
+    <div id="eduModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel rounded-3xl max-w-2xl w-full p-6 sm:p-8 border border-slate-700/80 relative max-h-[90vh] overflow-y-auto shadow-2xl">
+            <button onclick="toggleEducationalModal()" class="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-xl bg-sky-950 text-sky-400 border border-sky-800/50 flex items-center justify-center">
+                    <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white font-mono">FUNDAMENTAÇÃO PEDAGÓGICA</h3>
+                    <p class="text-xs text-slate-400">Por que separarmos Experiência de Competência?</p>
+                </div>
+            </div>
+
+            <div class="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                <div class="p-4 bg-slate-900/90 rounded-2xl border border-slate-800">
+                    <h4 class="font-bold text-red-400 mb-1 font-mono flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                        Experiência ≠ Competência
+                    </h4>
+                    <p class="text-slate-300">
+                        Ter passado por um evento não garante o domínio de uma competência. Uma <strong>Experiência</strong> é apenas o cenário/acontecimento. A <strong>Competência</strong> é a capacidade inferida através do que a pessoa <em>fez, decidiu e gerou de resultado</em> durante essa experiência.
+                    </p>
+                </div>
+
+                <h4 class="font-bold text-white pt-2 font-mono text-xs uppercase tracking-wider">A Cadeia de Transformação de Valor:</h4>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center text-xs font-mono">
+                    <div class="p-3 bg-amber-950/40 border border-amber-800/40 rounded-xl">
+                        <span class="block font-bold text-amber-400">1. Evidência</span>
+                        <span class="text-[10px] text-slate-400">Fato observável</span>
+                    </div>
+                    <div class="p-3 bg-sky-950/40 border border-sky-800/40 rounded-xl">
+                        <span class="block font-bold text-sky-400">2. Observação</span>
+                        <span class="text-[10px] text-slate-400">Análise da ação</span>
+                    </div>
+                    <div class="p-3 bg-emerald-950/40 border border-emerald-800/40 rounded-xl">
+                        <span class="block font-bold text-emerald-400">3. Competência</span>
+                        <span class="text-[10px] text-slate-400">Habilidade inferida</span>
+                    </div>
+                    <div class="p-3 bg-purple-950/40 border border-purple-800/40 rounded-xl">
+                        <span class="block font-bold text-purple-400">4. Valor</span>
+                        <span class="text-[10px] text-slate-400">Aplicação prática</span>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-amber-950/30 rounded-2xl border border-amber-800/40 text-amber-200/90 text-xs">
+                    <strong class="block mb-1 font-mono font-bold text-amber-300">Linguagem Hipotética e Não-Categorização:</strong>
+                    Em avaliação moderna, evita-se dizer "Você é inovador". O correto é "Esta experiência apresenta evidências de capacidade de inovação sob restrição de recursos". Isso mantém a análise pautada em fatos e aberta ao desenvolvimento contínuo.
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-800/80 text-right">
+                <button onclick="toggleEducationalModal()" class="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-mono font-bold text-xs transition-colors">
+                    Entendi, voltar à investigação
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT DE LÓGICA DO SISTEMA -->
+    <script>
+        // ESTADO GLOBAL DA INVESTIGAÇÃO
+        let currentStep = 0;
+        let activePresetKey = null;
+
+        // ESTRUTURA DAS ETAPAS DA INVESTIGAÇÃO
+        const stepDefinitions = [
+            { id: 0, name: 'Início', category: 'Seleção' },
+            { 
+                id: 1, 
+                name: 'Contexto', 
+                category: 'Etapa 1 de 7',
+                title: 'Qual foi o contexto da experiência?', 
+                conceptTitle: 'Investigando o Cenário',
+                conceptDesc: 'Descreva a situação inicial. Onde ocorreu, quem estava envolvido e qual era o cenário geral antes das ações.'
+            },
+            { 
+                id: 2, 
+                name: 'Ações', 
+                category: 'Etapa 2 de 7',
+                title: 'Quais ações concretas foram tomadas?', 
+                conceptTitle: 'Identificando Comportamentos',
+                conceptDesc: 'Foque no que foi EFETIVAMENTE feito. Ações devem ser verbos no passado (ex: "Organizou", "Escreveu", "Entrevistou").'
+            },
+            { 
+                id: 3, 
+                name: 'Decisões', 
+                category: 'Etapa 3 de 7',
+                title: 'Que escolhas e caminhos foram definidos?', 
+                conceptTitle: 'Analisando o Raciocínio',
+                conceptDesc: 'Por que determinada abordagem foi escolhida em detrimento de outra? O que orientou a escolha?'
+            },
+            { 
+                id: 4, 
+                name: 'Desafios', 
+                category: 'Etapa 4 de 7',
+                title: 'Quais dificuldades e obstáculos surgiram?', 
+                conceptTitle: 'Testando Resiliência e Adaptação',
+                conceptDesc: 'Imprevistos revelam como a pessoa reage sob pressão ou ambiguidade.'
+            },
+            { 
+                id: 5, 
+                name: 'Resultado', 
+                category: 'Etapa 5 de 7',
+                title: 'Qual foi o resultado observável?', 
+                conceptTitle: 'Constatando Impactos',
+                conceptDesc: 'O que aconteceu depois? Que dados, entregas ou mudanças tangíveis foram gerados?'
+            },
+            { 
+                id: 6, 
+                name: 'Evidências', 
+                category: 'Etapa 6 de 7',
+                title: 'Extração de Evidências Fatos vs. Opiniões', 
+                conceptTitle: 'Filtrando Evidências Reais',
+                conceptDesc: 'Evidências são fatos extraídos das etapas anteriores que sustentam conclusões sobre capacidades.'
+            },
+            { 
+                id: 7, 
+                name: 'Competências', 
+                category: 'Etapa 7 de 7',
+                title: 'Mapeamento de Competências Inferidas', 
+                conceptTitle: 'Associando Evidência à Competência',
+                conceptDesc: 'Com base nas evidências, quais competências PODEM ser associadas de forma fundamentada?'
+            },
+            { id: 8, name: 'Mapa de Valor', category: 'Resultado Final' }
+        ];
+
+        // PRESETS DEMONSTRATIVOS (DADOS PRÉ-DEFINIDOS)
+        const presets = {
+            academic: {
+                title: 'Organização de Trabalho Acadêmico Interdisciplinar em Grupo',
+                context: 'Durante o 4º semestre da faculdade, grupo de 5 integrantes precisava entregar um projeto complexo em 3 semanas, com desmotivação inicial e prazos desalinhar dos.',
+                actions: 'Mapeou as habilidades de cada integrante, estabeleceu um cronograma em quadro visual compartilhado e organizou reuniões diárias de 10 minutos para alinhamento.',
+                decisions: 'Decidiu redistribuir as tarefas de acordo com a afinidade de cada membro, em vez de dividir partes aleatoriamente, garantindo maior engajamento.',
+                challenges: 'Um integrante atrasou a entrega principal há 2 dias do prazo final por problemas pessoais.',
+                result: 'O projeto foi entregue com 12 horas de antecedência, obtendo nota máxima e elogio pela coesão da apresentação.',
+                evidences: [
+                    'Criação e gestão de quadro visual de acompanhamento de prazos.',
+                    'Redistribuição estratégica de funções baseada nas aptidões dos membros.',
+                    'Mediação direta e acolhimento para contornar o atraso de um integrante sem comprometer a entrega.'
+                ],
+                competencies: [
+                    {
+                        name: 'Gestão da Execução e Prazos',
+                        evidenceIndex: 0,
+                        language: 'Esta experiência apresenta evidências de capacidade de estruturar processos e acompanhar marcos de entrega.',
+                        values: ['Projetos Acadêmicos', 'Planejamento Operacional', 'Cumprimento de Prazos']
+                    },
+                    {
+                        name: 'Colaboração e Empatia Operacional',
+                        evidenceIndex: 1,
+                        language: 'Uma competência que pode ser associada é o alinhamento de perfis individuais às necessidades do grupo.',
+                        values: ['Trabalho em Equipe', 'Liderança Facilitadora', 'Gestão de Clima']
+                    },
+                    {
+                        name: 'Resolução Adaptativa de Problemas',
+                        evidenceIndex: 2,
+                        language: 'A evidência observada sugere maleabilidade para lidar com contingências de pessoal sem perdas de qualidade.',
+                        values: ['Gestão de Crise', 'Resiliência', 'Continuidades de Processo']
+                    }
+                ]
+            },
+            crisis: {
+                title: 'Resolução de Pane Técnica em Evento Institucional',
+                context: 'Auditório lotado com 200 pessoas e transmissão online pronta para iniciar em 15 minutos, quando a mesa de áudio principal parou de funcionar.',
+                actions: 'Manteve a calma da equipe, isolou o problema testando cabos rapidamente e configurou um sistema secundário de emergência com equipamentos de reserva.',
+                decisions: 'Optou por iniciar o evento com áudio simplificado em vez de atrasar a programação 40 minutos para consertar a mesa principal.',
+                challenges: 'Pressão dos palestrantes nervosos e ruído de fundo durante a troca de cabos.',
+                result: 'O evento iniciou com apenas 3 minutos de atraso e o público presencial e online assistiu sem interrupções significativas.',
+                evidences: [
+                    'Diagnóstico rápido por eliminação sob forte restrição de tempo.',
+                    'Decisão ponderada por priorizar o cumprimento do horário da audiência.',
+                    'Manutenção do controle emocional e orientação clara para a equipe durante o estresse.'
+                ],
+                competencies: [
+                    {
+                        name: 'Tomada de Decisão Sob Pressão',
+                        evidenceIndex: 1,
+                        language: 'Esta experiência apresenta evidências de raciocínio pragmático focado no resultado final diante de imprevistos.',
+                        values: ['Resolução de Problemas', 'Gerenciamento de Riscos', 'Agilidade Operacional']
+                    },
+                    {
+                        name: 'Raciocínio Analítico e Diagnóstico',
+                        evidenceIndex: 0,
+                        language: 'Uma competência observável é a capacidade de isolar variáveis para identificar a causa-raiz de falhas.',
+                        values: ['Suporte Técnico', 'Análise de Processos', 'Eficiência de Recursos']
+                    },
+                    {
+                        name: 'Estabilidade Emocional e Liderança',
+                        evidenceIndex: 2,
+                        language: 'A evidência aponta para postura apaziguadora e orientação clara em momentos de perturbação.',
+                        values: ['Gestão de Pessoas em Crise', 'Comunicação Assertiva']
+                    }
+                ]
+            },
+            custom: {
+                title: 'Experiência Personalizada do Usuário',
+                context: '',
+                actions: '',
+                decisions: '',
+                challenges: '',
+                result: '',
+                evidences: [],
+                competencies: []
+            }
+        };
+
+        // DADOS DA INVESTIGAÇÃO ATUAL (DADOS DO FORMULÁRIO DO USUÁRIO)
+        let currentData = JSON.parse(JSON.stringify(presets.academic));
+
+        // INICIALIZAÇÃO DA PÁGINA
+        window.onload = function() {
+            lucide.createIcons();
+            renderStepBadges();
+        };
+
+        // ALTERNA MODAL EDUCATIVO
+        function toggleEducationalModal() {
+            const modal = document.getElementById('eduModal');
+            modal.classList.toggle('hidden');
+        }
+
+        // REINICIA A INVESTIGAÇÃO
+        function resetInvestigation() {
+            currentStep = 0;
+            activePresetKey = null;
+            document.getElementById('progressContainer').classList.add('hidden');
+            document.getElementById('investigationContainer').classList.add('hidden');
+            document.getElementById('step-8').classList.add('hidden');
+            document.getElementById('step-0').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // SELECIONAR PRESET OU PERSONALIZADO
+        function selectPreset(key) {
+            activePresetKey = key;
+            if (key === 'custom') {
+                currentData = {
+                    title: 'Minha Experiência Personalizada',
+                    context: '',
+                    actions: '',
+                    decisions: '',
+                    challenges: '',
+                    result: '',
+                    evidences: ['Evidência a ser identificada 1', 'Evidência a ser identificada 2'],
+                    competencies: [
+                        {
+                            name: 'Competência A Ser Analisada',
+                            evidenceIndex: 0,
+                            language: 'Esta experiência indica possíveis indícios de...',
+                            values: ['Aplicação Prática', 'Resolução de Desafios']
+                        }
+                    ]
+                };
+            } else {
+                currentData = JSON.parse(JSON.stringify(presets[key]));
+            }
+            
+            currentStep = 1;
+            document.getElementById('step-0').classList.add('hidden');
+            document.getElementById('progressContainer').classList.remove('hidden');
+            document.getElementById('investigationContainer').classList.remove('hidden');
+            
+            updateStepView();
+        }
+
+        // ATUALIZA AS BADGES DA BARRA DE PROGRESSO
+        function renderStepBadges() {
+            const container = document.getElementById('stepBadges');
+            container.innerHTML = '';
+            
+            stepDefinitions.slice(1, 8).forEach(step => {
+                const badge = document.createElement('button');
+                const isCurrent = step.id === currentStep;
+                const isPassed = step.id < currentStep;
+
+                badge.className = `px-3 py-1 rounded-lg text-[11px] font-mono font-medium whitespace-nowrap transition-all border ${
+                    isCurrent 
+                        ? 'bg-sky-950 text-sky-400 border-sky-500/80 shadow-md shadow-sky-950 ring-1 ring-sky-500/50' 
+                        : isPassed 
+                            ? 'bg-slate-900/80 text-slate-300 border-slate-800 hover:border-slate-700' 
+                            : 'bg-slate-950/40 text-slate-600 border-slate-900'
+                }`;
+                badge.textContent = `${step.id}. ${step.name}`;
+                badge.onclick = () => {
+                    if (step.id <= getHighestReachedStep()) {
+                        currentStep = step.id;
+                        updateStepView();
+                    }
+                };
+                container.appendChild(badge);
+            });
+        }
+
+        function getHighestReachedStep() {
+            return 8; // Permite navegação livre após início
+        }
+
+        // NAVEGAÇÃO (AVANÇAR / VOLTAR)
+        function navigateStep(delta) {
+            saveCurrentStepInput();
+            
+            const nextStep = currentStep + delta;
+            if (nextStep >= 1 && nextStep <= 8) {
+                currentStep = nextStep;
+                updateStepView();
+            }
+        }
+
+        // SALVA CONTEÚDO DIGITADO PELO USUÁRIO NO PASSO ATUAL
+        function saveCurrentStepInput() {
+            const input = document.getElementById('stepInputField');
+            if (!input) return;
+
+            switch(currentStep) {
+                case 1: currentData.context = input.value; break;
+                case 2: currentData.actions = input.value; break;
+                case 3: currentData.decisions = input.value; break;
+                case 4: currentData.challenges = input.value; break;
+                case 5: currentData.result = input.value; break;
+            }
+        }
+
+        // ATUALIZA A INTERFACE DE ACORDO COM A ETAPA ATUAL
+        function updateStepView() {
+            if (currentStep === 8) {
+                showFinalMap();
+                return;
+            }
+
+            document.getElementById('step-8').classList.add('hidden');
+            document.getElementById('investigationContainer').classList.remove('hidden');
+
+            const def = stepDefinitions[currentStep];
+            
+            // Atualiza progresso
+            const percent = Math.round((currentStep / 8) * 100);
+            document.getElementById('progressBar').style.width = `${percent}%`;
+            document.getElementById('currentStepLabel').innerHTML = `<span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span> Etapa ${currentStep} de 7: ${def.name}`;
+            document.getElementById('progressPercentage').textContent = `${percent}% Mapeado`;
+            
+            // Atualiza Textos
+            document.getElementById('stepCategory').textContent = def.category;
+            document.getElementById('stepTitle').textContent = def.title;
+            document.getElementById('conceptTitle').textContent = def.conceptTitle;
+            document.getElementById('conceptDescription').textContent = def.conceptDesc;
+            
+            // Mostra aviso de linguagem de evidência nas etapas 6 e 7
+            const guardrail = document.getElementById('languageGuardrail');
+            if (currentStep >= 6) {
+                guardrail.classList.remove('hidden');
+            } else {
+                guardrail.classList.add('hidden');
+            }
+
+            // Renderiza corpo da etapa
+            const body = document.getElementById('stepBody');
+            body.innerHTML = '';
+
+            if (currentStep >= 1 && currentStep <= 5) {
+                // Etapas de entrada de dados textual
+                let val = '';
+                if (currentStep === 1) val = currentData.context;
+                if (currentStep === 2) val = currentData.actions;
+                if (currentStep === 3) val = currentData.decisions;
+                if (currentStep === 4) val = currentData.challenges;
+                if (currentStep === 5) val = currentData.result;
+
+                body.innerHTML = `
+                    <div class="space-y-3">
+                        <label class="block text-xs font-mono font-semibold text-slate-300 uppercase tracking-wider">
+                            // Insira os detalhes observáveis desta etapa:
+                        </label>
+                        <textarea id="stepInputField" rows="6" 
+                            class="w-full p-4 rounded-2xl bg-slate-950/80 border border-slate-800 focus:ring-1 focus:ring-sky-500 focus:border-sky-500 text-slate-100 text-sm leading-relaxed resize-none font-sans placeholder-slate-600 shadow-inner"
+                            placeholder="Insira os fatos concretos aqui... Ex: Quem, quando, o quê, como...">${val}</textarea>
+                        <div class="flex items-center justify-between text-xs text-slate-500 font-mono">
+                            <span>* Evite julgamentos de valor ou adjetivos genéricos nesta fase.</span>
+                            <span>Fatos observáveis apenas.</span>
+                        </div>
+                    </div>
+                `;
+            } else if (currentStep === 6) {
+                // Etapa de Extração de Evidências
+                generateEvidencesFromData();
+                body.innerHTML = `
+                    <div class="space-y-4">
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            A partir do contexto, ações, decisões e resultados relatados, isolamos os seguintes 
+                            <strong class="text-amber-400">fatos objetivos (evidências)</strong> que servirão de base para a análise:
+                        </p>
+                        <div class="space-y-3">
+                            ${currentData.evidences.map((ev, idx) => `
+                                <div class="p-4 bg-slate-900/90 border border-amber-500/30 rounded-2xl flex items-start gap-3.5 relative overflow-hidden group">
+                                    <div class="w-7 h-7 rounded-lg bg-amber-950 border border-amber-700/50 text-amber-400 font-mono font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                                        E${idx+1}
+                                    </div>
+                                    <div class="flex-1">
+                                        <span class="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider block">Evidência Factual Isolada</span>
+                                        <p class="text-sm font-medium text-slate-200 mt-0.5 leading-relaxed">${ev}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (currentStep === 7) {
+                // Etapa de Mapeamento de Competências
+                body.innerHTML = `
+                    <div class="space-y-4">
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Associando as evidências factuais a <strong class="text-sky-400">capacidades inferidas</strong> (usando linguagem de evidência e fundamentação):
+                        </p>
+                        <div class="space-y-4">
+                            ${currentData.competencies.map((comp, idx) => `
+                                <div class="p-5 glass-card rounded-2xl hover:border-sky-500/40 transition-all">
+                                    <div class="flex items-start justify-between gap-2 mb-2">
+                                        <span class="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold bg-sky-950 text-sky-400 border border-sky-800/50">
+                                            Competência Inferida #${idx+1}
+                                        </span>
+                                        <span class="text-xs font-mono text-amber-400/90 font-medium">Conectada a E${comp.evidenceIndex + 1}</span>
+                                    </div>
+                                    <h4 class="text-base font-bold text-white">${comp.name}</h4>
+                                    <p class="text-xs text-slate-300 italic mt-2 bg-slate-950/80 p-3 rounded-xl border border-slate-800/80 leading-relaxed">
+                                        "${comp.language}"
+                                    </p>
+                                    <div class="mt-3 flex flex-wrap gap-1.5 font-mono">
+                                        ${comp.values.map(val => `
+                                            <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300 text-[10px]">
+                                                • ${val}
+                                            </span>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderStepBadges();
+            lucide.createIcons();
+            window.scrollTo({ top: 100, behavior: 'smooth' });
+        }
+
+        // GERA EVIDÊNCIAS E COMPETÊNCIAS COM BASE NOS INPUTS CASO SEJA CUSTOM
+        function generateEvidencesFromData() {
+            if (activePresetKey !== 'custom') return;
+
+            // Se o usuário digitou dados customizados, geramos evidências simuladas com base nas frases
+            const evs = [];
+            if (currentData.actions) evs.push(`Ação registrada: ${currentData.actions.substring(0, 90)}...`);
+            if (currentData.decisions) evs.push(`Decisão documentada: ${currentData.decisions.substring(0, 90)}...`);
+            if (currentData.result) evs.push(`Resultado apurado: ${currentData.result.substring(0, 90)}...`);
+
+            if (evs.length === 0) {
+                evs.push("Planejamento e execução de tarefas dentro do contexto informado.");
+                evs.push("Resposta ativa diante das restrições e desafios apresentados.");
+            }
+
+            currentData.evidences = evs;
+
+            // Ajusta competências customizadas associadas
+            currentData.competencies = evs.map((ev, i) => {
+                let name = "Organização e Execução";
+                let lang = "Esta experiência apresenta evidências de capacidade de acompanhamento de processos.";
+                let val = ["Trabalho em Equipe", "Resolução de Problemas"];
+
+                if (i === 1) {
+                    name = "Tomada de Decisão Consciente";
+                    lang = "Uma competência que pode ser associada é a ponderação de alternativas sob restrição.";
+                    val = ["Gestão de Projetos", "Adaptabilidade"];
+                } else if (i === 2) {
+                    name = "Foco em Resultados Observáveis";
+                    lang = "A evidência observada sugere orientação para a entrega de impacto tangível.";
+                    val = ["Entrega de Valor", "Desempenho"];
+                }
+
+                return {
+                    name: name,
+                    evidenceIndex: i,
+                    language: lang,
+                    values: val
+                };
+            });
+        }
+
+        // MOSTRA O MAPA VISUAL FINAL (ETAPA 8) COM NÓS E LINHAS CONECTADAS
+        function showFinalMap() {
+            document.getElementById('investigationContainer').classList.add('hidden');
+            document.getElementById('step-8').classList.remove('hidden');
+            
+            // Atualiza resumo
+            document.getElementById('summaryExpTitle').textContent = currentData.title;
+            document.getElementById('summaryExpDesc').textContent = `${currentData.context} | Ações: ${currentData.actions}`;
+
+            const container = document.getElementById('nodesContainer');
+            container.innerHTML = '';
+
+            currentData.competencies.forEach((comp, idx) => {
+                const evText = currentData.evidences[comp.evidenceIndex] || "Evidência factual registrada na análise.";
+                
+                const nodeRow = document.createElement('div');
+                nodeRow.className = 'glass-card rounded-2xl p-5 sm:p-6 hover:border-slate-700 transition-all relative overflow-hidden group node-card';
+                
+                nodeRow.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center relative z-10">
+                        <!-- COLUNA 1: EVIDÊNCIA (NÓ AMBER) -->
+                        <div class="p-4 rounded-xl bg-slate-950/90 border border-amber-500/30 relative shadow-md">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-5 h-5 rounded bg-amber-950 border border-amber-700/60 text-amber-400 font-mono font-bold text-[10px] flex items-center justify-center">
+                                    E${comp.evidenceIndex + 1}
+                                </span>
+                                <span class="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider">Evidência Concreta</span>
+                            </div>
+                            <p class="text-xs font-medium text-slate-200 leading-relaxed">${evText}</p>
+                        </div>
+
+                        <!-- COLUNA 2: COMPETÊNCIA (NÓ BLUE - INTERATIVO) -->
+                        <div class="p-4 rounded-xl bg-slate-950/90 border border-sky-500/40 relative cursor-pointer group-hover:border-sky-400 transition-all shadow-md" onclick="highlightNode(this)">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[10px] font-mono font-bold text-sky-400 uppercase tracking-wider">Competência Inferida</span>
+                                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-sky-400"></i>
+                            </div>
+                            <h4 class="text-sm font-bold text-white mb-1.5">${comp.name}</h4>
+                            <p class="text-[11px] text-slate-300 italic leading-relaxed">
+                                "${comp.language}"
+                            </p>
+                        </div>
+
+                        <!-- COLUNA 3: VALOR GERADO (NÓ GREEN) -->
+                        <div class="p-4 rounded-xl bg-slate-950/90 border border-emerald-500/30 shadow-md">
+                            <div class="flex items-center gap-1.5 mb-2">
+                                <i data-lucide="trending-up" class="w-3.5 h-3.5 text-emerald-400"></i>
+                                <span class="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider">Valor Gerado Potencial</span>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5 mt-2 font-mono">
+                                ${comp.values.map(v => `
+                                    <span class="px-2 py-1 bg-emerald-950/60 border border-emerald-800/50 rounded text-[10px] font-semibold text-emerald-300">
+                                        🎯 ${v}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(nodeRow);
+            });
+
+            lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // DESTAQUE INTERATIVO AO CLICAR NA COMPETÊNCIA
+        function highlightNode(element) {
+            const parent = element.closest('.node-card');
+            parent.classList.add('ring-2', 'ring-sky-400', 'bg-sky-950/20');
+            setTimeout(() => {
+                parent.classList.remove('ring-2', 'ring-sky-400', 'bg-sky-950/20');
+            }, 1800);
+        }
+
+        // IMPRESSÃO / SÍNTESE
+        function printSummary() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
