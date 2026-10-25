@@ -1,7 +1,6 @@
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { isPlaceholder } from "../../lib/content";
-import Rich from "./Rich";
 
 type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & {
   href: string;
